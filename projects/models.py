@@ -10,3 +10,6 @@ class Project(models.Model):
     package_type = models.ForeignKey(Package)
     quota_memory_limit = models.PositiveIntegerField(verbose_name="Quota Memory Limit (in GB)")
     is_free = models.BooleanField(default=False)
+
+    def __str__(self):
+        return 'Project: {}'.format(self.project_name)

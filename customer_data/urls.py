@@ -20,9 +20,10 @@ from uaa_client import urls as uaa_urls
 from uaa_client import views as uaa_views
 
 urlpatterns = [
+    url(r'^django-admin/login', uaa_views.login, name='login'),
     url(r'^', include('projects.urls')),
     url(r'^auth/', include(uaa_urls)),
     url(r'^django-admin/', include(admin.site.urls)),
 ]
 
-urlpatterns.insert(0,url(r'^django-admin/login', uaa_views.login, name='login'))
+#urlpatterns.insert(0,url(r'^django-admin/login', uaa_views.login, name='login'))

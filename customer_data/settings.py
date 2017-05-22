@@ -33,6 +33,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', True) != "False"
+DEBUG_LOGS = os.environ.get('DEBUG_LOGS', True) != "False"
 
 ALLOWED_HOSTS = []
 
@@ -42,6 +43,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = (
     'packages.apps.PackagesConfig',
     'projects.apps.ProjectsConfig',
+    'customer_admin.apps.CustomerAdminConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -87,9 +89,10 @@ WSGI_APPLICATION = 'customer_data.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 database_url = os.environ.get('DATABASE_URL', 'postgres://localhost:5432/customer_data')
-cf_db = env.get_service(name=re.compile('customer_data-db'))
-if cf_db:
+cf_db = env.get_service(name=re.compile('customer-db'))
+if cf_db and cf_db.credentials['uri']:
     database_url = cf_db.credentials['uri']
+    print('Using database instance `customer-db`')
 
 DATABASES = {
     'default': dj_database_url.parse(database_url)
@@ -97,9 +100,10 @@ DATABASES = {
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = get_random_string(50)
-django_creds = env.get_service(name=re.compile('customer_data-django-creds'))
+django_creds = env.get_service(name=re.compile('customer-django-creds'))
 if django_creds and django_creds.credentials['SECRET_KEY']:
     SECRET_KEY = django_creds.credentials['SECRET_KEY']
+    print('Using UPS creds instance `customer-django-creds`')
 
 
 # Internationalization
@@ -125,7 +129,7 @@ AUTHENTICATION_BACKENDS = (
     'uaa_client.authentication.UaaBackend',
 )
 
-if DEBUG:
+if DEBUG or DEBUG_LOGS:
     LOGGING = {
         'version': 1,
         'disable_existing_loggers': False,
@@ -153,6 +157,7 @@ if cf_s3:
     AWS_S3_REGION_NAME = cf_s3.credentials['region']
     AWS_ACCESS_KEY_ID = cf_s3.credentials['access_key_id']
     AWS_SECRET_ACCESS_KEY = cf_s3.credentials['secret_access_key']
+    print('Using S3 instance `customer-s3`')
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles/')
 
@@ -177,9 +182,8 @@ else:
 uaa_service = env.get_service(name='customer-uaa-creds')
 if uaa_service is not None:
     UAA_CLIENT_ID = uaa_service.credentials['UAA_CLIENT_ID']
-
     UAA_CLIENT_SECRET = uaa_service.credentials['UAA_CLIENT_SECRET']
+    print('Using UPS creds instance `customer-uaa-creds`')
 else:
     UAA_CLIENT_ID = os.environ.get('UAA_CLIENT_ID', 'client-id')
-
     UAA_CLIENT_SECRET = os.environ.get('UAA_CLIENT_SECRET', 'secret-string')
