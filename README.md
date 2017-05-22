@@ -16,10 +16,10 @@ django will check against it's allowed users database and permit/revoke access.
 
 ```sh
 # Production
-cf cs aws-rds medium-psql customer_data-db
+cf cs aws-rds medium-psql customer-db
 
 # Staging
-cf cs aws-rds shared-psql customer_data-db
+cf cs aws-rds shared-psql customer-db
 ```
 
 ### S3 Bucket
