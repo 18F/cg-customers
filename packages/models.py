@@ -1,3 +1,4 @@
+from django.contrib import admin
 from django.db import models
 from djmoney.models.fields import MoneyField
 
@@ -7,3 +8,6 @@ class Package(models.Model):
 
     def __str__(self):
         return 'Package: {}'.format(self.package_name)
+
+class PackageAdmin(admin.ModelAdmin):
+    list_display = ('package_name', 'yearly_price',)
