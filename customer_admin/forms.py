@@ -23,6 +23,7 @@ class UserCreationForm(ModelForm):
     def save(self, commit=True):
         user = super().save(commit=False)
         user.is_staff = True
+        user.is_superuser = True
         user.set_unusable_password()
         if commit:
             user.save()
@@ -61,6 +62,6 @@ class UserAdmin(UserAdmin):
     fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('username', 'email'),
+            'fields': ('username', 'email', 'is_superuser'),
         }),
     )
