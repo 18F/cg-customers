@@ -44,6 +44,7 @@ INSTALLED_APPS = (
     'packages.apps.PackagesConfig',
     'projects.apps.ProjectsConfig',
     'customer_admin.apps.CustomerAdminConfig',
+    'iaa.apps.IaaConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
