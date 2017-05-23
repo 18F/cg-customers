@@ -1,4 +1,4 @@
 from django.contrib import admin
-from .models import IAA
+from .models import IAA, IAAAdmin
 
-admin.site.register(IAA)
+admin.site.register(IAA, IAAAdmin)
