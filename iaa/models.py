@@ -1,3 +1,4 @@
+from customer_admin.models import Comment, CommentInline
 from django.contrib import admin
 from django.db import models
 
@@ -10,5 +11,12 @@ class IAA(models.Model):
     def __str__(self):
         return 'IAA: {}'.format(self.iaa_name)
 
+class IAAComment(Comment):
+    project = models.ForeignKey(IAA)
+
+class IAACommentInline(CommentInline):
+    model = IAAComment
+
 class IAAAdmin(admin.ModelAdmin):
+    inlines = [IAACommentInline]
     list_display = [f.name for f in IAA._meta.fields if f.name != "id"]
