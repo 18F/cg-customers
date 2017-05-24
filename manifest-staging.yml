@@ -1,0 +1,15 @@
+applications:
+- name: customers-staging
+  domain: fr.cloud.gov
+  instances: 1
+  memory: 512M
+  disk_quota: 1024M
+  stack: cflinuxfs2
+  buildpack: python_buildpack
+  services:
+    - customer-uaa-creds
+    - customer-django-creds
+    - customer-db
+    - customer-s3
+  env:
+    DEBUG: 'False'
