@@ -9,7 +9,7 @@ test:
   pre:
     - createdb customer_data
     - ./manage.py makemigrations
-    - ./manage.py createinitialrevisions
     - ./manage.py migrate --noinput
+    - ./manage.py createinitialrevisions
   override:
     - DJANGO_SETTINGS_MODULE=customer_data.settings pytest
