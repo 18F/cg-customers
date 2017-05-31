@@ -7,8 +7,8 @@ set -o pipefail
 
 # Run migrations
 ./manage.py makemigrations
-./manage.py createinitialrevisions
 ./manage.py migrate --noinput
+./manage.py createinitialrevisions
 
 # Run application
 python manage.py runserver
