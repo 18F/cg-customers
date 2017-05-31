@@ -41,16 +41,16 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
-    'packages.apps.PackagesConfig',
-    'projects.apps.ProjectsConfig',
-    'customer_admin.apps.CustomerAdminConfig',
-    'iaa.apps.IaaConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'reversion',
+    'packages.apps.PackagesConfig',
+    'iaa.apps.IaaConfig',
+    'projects.apps.ProjectsConfig',
     'uaa_client',
 )
 
