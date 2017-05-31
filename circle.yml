@@ -7,6 +7,9 @@ dependencies:
     - pip install -r dev-requirements.txt
 test:
   pre:
+    - createdb customer_data
     - ./manage.py makemigrations
     - ./manage.py createinitialrevisions
     - ./manage.py migrate --noinput
+  override:
+    - DJANGO_SETTINGS_MODULE=customer_data.settings pytest
