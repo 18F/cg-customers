@@ -9,6 +9,7 @@ set -o pipefail
 
 # Run migrations
 ./manage.py makemigrations
+./manage.py createinitialrevisions
 ./manage.py migrate --noinput
 
 # Run application

@@ -1,4 +1,6 @@
 from django.contrib import admin
-from .models import Package, PackageAdmin
-
-admin.site.register(Package, PackageAdmin)
+from reversion.admin import VersionAdmin
+from .models import Package
+@admin.register(Package)
+class PackageAdmin(VersionAdmin):
+    list_display = ('package_name', 'yearly_price',)
