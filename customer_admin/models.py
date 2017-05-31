@@ -1,6 +1,7 @@
-from django.db import models
+from django.contrib.auth.admin import UserAdmin
 from django.contrib import admin
-from django.contrib.auth.models import User
+from django.db import models
+from .forms import UserCreationForm, UserChangeForm
 
 class Comment(models.Model):
     """
@@ -18,3 +19,22 @@ class CommentInline(admin.TabularInline):
     The base class for all comment inline classes.
     """
     extra = 0
+
+class UserAdmin(UserAdmin):
+    add_form = UserCreationForm
+
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('username', 'email'),
+        }),
+    )
+
+    form = UserChangeForm
+
+    fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('username', 'email', 'is_superuser'),
+        }),
+    )

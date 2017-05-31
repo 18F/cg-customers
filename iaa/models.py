@@ -12,11 +12,7 @@ class IAA(models.Model):
         return 'IAA: {}'.format(self.iaa_name)
 
 class IAAComment(Comment):
-    project = models.ForeignKey(IAA)
+    project = models.ForeignKey('IAA')
 
 class IAACommentInline(CommentInline):
     model = IAAComment
-
-class IAAAdmin(admin.ModelAdmin):
-    inlines = [IAACommentInline]
-    list_display = [f.name for f in IAA._meta.fields if f.name != "id"]

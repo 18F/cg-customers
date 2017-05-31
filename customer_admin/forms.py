@@ -1,6 +1,5 @@
-from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import UsernameField
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.forms import EmailField
 from django.forms import ModelForm
 
@@ -10,7 +9,7 @@ class UserCreationForm(ModelForm):
     email = EmailField(label=("Email address"), required=True,
         help_text=("Required."))
     class Meta:
-        model = User
+        model = get_user_model()
         fields = ("username", "email",)
         field_classes = {'username': UsernameField}
 
@@ -36,7 +35,7 @@ class UserChangeForm(ModelForm):
     """A replacement for user change which does not contain a password.
     Largely lifted from Django"""
     class Meta:
-        model = User
+        model = get_user_model()
         exclude = ['is_staff', 'password']
         field_classes = {'username': UsernameField}
 
@@ -45,23 +44,3 @@ class UserChangeForm(ModelForm):
         f = self.fields.get('user_permissions')
         if f is not None:
             f.queryset = f.queryset.select_related('content_type')
-
-
-class UserAdmin(UserAdmin):
-    add_form = UserCreationForm
-
-    add_fieldsets = (
-        (None, {
-            'classes': ('wide',),
-            'fields': ('username', 'email'),
-        }),
-    )
-
-    form = UserChangeForm
-
-    fieldsets = (
-        (None, {
-            'classes': ('wide',),
-            'fields': ('username', 'email', 'is_superuser'),
-        }),
-    )

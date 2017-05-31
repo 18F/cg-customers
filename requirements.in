@@ -1,0 +1,11 @@
+boto3
+cfenv
+cg-django-uaa
+Django
+django-money
+django-reversion
+django-storages
+dj-database-url
+gunicorn
+psycopg2
+pytz
