@@ -8,6 +8,7 @@ class Project(models.Model):
     iaa = models.ForeignKey('iaa.IAA', null=True, verbose_name="IAA")
     system_owner = models.CharField(max_length=64, verbose_name="System Owner")
     package_type = models.ForeignKey('packages.Package')
+    effective_package_date = models.DateField(verbose_name="Package Effective Date", null=True)
     quota_memory_limit = models.PositiveIntegerField(verbose_name="Quota Memory Limit (in GB)")
     is_free = models.BooleanField(default=False)
 
