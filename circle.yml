@@ -13,3 +13,10 @@ test:
     - ./manage.py createinitialrevisions
   override:
     - DJANGO_SETTINGS_MODULE=customer_data.settings pytest
+
+deployment:
+  deploy:
+    branch: [master, production]
+    owner: 18F
+    commands:
+      - ./deploy.sh
