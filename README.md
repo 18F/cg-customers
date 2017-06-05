@@ -53,13 +53,37 @@ cf cups customer-uaa-creds -p '{"UAA_CLIENT_ID": "client-id", "UAA_CLIENT_SECRET
 cf cups customer-django-creds -p '{"SECRET_KEY": "your-secret-key"}'
 ```
 
-### Deploy
+### Deployer Accounts
+
+In both the `customer-prod` and `customer-stage` spaces, create a deployer
+account.
 
 ```sh
-cf push
+cf create-service cloud-gov-service-account space-deployer customer-deployer
 ```
 
+Run this command to get the fugacious link to get the creds:
+```sh
+cf service customer-deployer
+```
+
+Once you have the credentials for both spaces, go to [CircleCI](https://circleci.com/gh/18F/cg-customers/edit#env-vars)
+and set/replace the following variables:
+
+- `CF_USERNAME_PROD_SPACE`
+- `CF_PASSWORD_PROD_SPACE`
+- `CF_USERNAME_STAGE_SPACE`
+- `CF_PASSWORD_STAGE_SPACE`
+
+Once you have setup these credentials, merges into the `master` branch  will
+deploy to the staging environment and merges into the `production` branch will
+deploy to the production environment.
+
+
 ### Add initial account(s) with access.
+
+Once the application is deployed, if this is a fresh database, you will need
+to setup a superuser so they can login.
 
 ```sh
 cf ssh customers
@@ -68,6 +92,8 @@ cd app
 $HOME/app/.cloudfoundry/python/bin/python3 manage.py createsuperuser \
   --username foo --email foo@example.org --noinput
 ```
+
+*Note: you do not set a password*
 
 ### Local development
 
