@@ -1,5 +1,7 @@
 # cloud.gov Customer app
 
+[![CircleCI](https://circleci.com/gh/18F/cg-customers.svg?style=svg)](https://circleci.com/gh/18F/cg-customers)
+
 It just uses the django-admin interface to act as the UI for the machine
 readable source of truth for customer data.
 
