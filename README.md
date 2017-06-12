@@ -101,13 +101,13 @@ $HOME/app/.cloudfoundry/python/bin/python3 manage.py createsuperuser \
 
 #### Database setup
 You need to have a Postgres database running. With your locally running
-database, run `createdb customer_data`
+database, run `createdb customer_dashboard`
 
 If it is not running via localhost:5432, you will need to export the database
 url.
 
 ```
-export DATABASE_URL="postgres://user:pw@ipaddr:port/customer_data"
+export DATABASE_URL="postgres://user:pw@ipaddr:port/customer_dashboard"
 ```
 
 #### Get dependencies

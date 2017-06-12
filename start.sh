@@ -13,4 +13,4 @@ set -o pipefail
 ./manage.py createinitialrevisions
 
 # Run application
-gunicorn -w 2 customer_data.wsgi:application
+gunicorn -w 2 customer_dashboard.wsgi:application

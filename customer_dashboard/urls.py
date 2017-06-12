@@ -1,4 +1,4 @@
-"""customer_data URL Configuration
+"""customer_dashboard URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/1.8/topics/http/urls/
@@ -21,7 +21,7 @@ from uaa_client import views as uaa_views
 
 urlpatterns = [
     url(r'^django-admin/login', uaa_views.login, name='login'),
-    url(r'^', include('projects.urls')),
+    url(r'^', include('customer_info.urls')),
     url(r'^auth/', include(uaa_urls)),
     url(r'^django-admin/', include(admin.site.urls)),
 ]
