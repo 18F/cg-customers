@@ -51,6 +51,27 @@ link and create a user-provided-service using the credentials.
 cf cups customer-uaa-creds -p '{"UAA_CLIENT_ID": "client-id", "UAA_CLIENT_SECRET": "client_secret"}'
 ```
 
+### S3 bucket with billing data
+
+In order to get the S3 bucket that is published by the
+[cg-billing](https://github.com/18F/cg-billing/) app, you have to get the old
+pipeline, change the org and space for where it should place the UPS, then set
+new pipeline.
+
+To change the pipeline, you use the `fly` cli.
+
+To get the pipeline, run:
+
+```sh
+fly -t {your-concourse-target} get-pipeline -p deploy-billing > deploy_billing.yml
+```
+
+To set the pipeline, run:
+
+```sh
+fly -t {your-concourse-target} set-pipeline -n -c deploy_billing.yml -p deploy-billing
+```
+
 ### Other credentials
 ```sh
 cf cups customer-django-creds -p '{"SECRET_KEY": "your-secret-key"}'

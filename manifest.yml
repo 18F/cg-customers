@@ -11,5 +11,6 @@ applications:
     - customer-django-creds
     - customer-db
     - customer-s3
+    - billing
   env:
     DEBUG: 'False'
