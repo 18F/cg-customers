@@ -5,7 +5,8 @@
 It just uses the django-admin interface to act as the UI for the machine
 readable source of truth for customer data.
 
-https://customers.fr.cloud.gov
+[Production](https://customers.fr.cloud.gov)
+[Staging](https://customers.fr-stage.cloud.gov)
 
 Team members will need to request access to #cg-customer to have your e-mail
 added to the django database so that when login requests from this
@@ -40,7 +41,7 @@ cf create-service cloud-gov-identity-provider oauth-client \
 # Staging
 cf create-service cloud-gov-identity-provider oauth-client \
   customer-uaa-client \
-  -c '{"redirect_uri": ["https://customers-staging.fr.cloud.gov"]}'
+  -c '{"redirect_uri": ["https://customers.fr-stage.cloud.gov"]}'
 ```
 
 Next, run: `cf service customer-uaa-client` to get the fugacious link. Open the
@@ -48,6 +49,27 @@ link and create a user-provided-service using the credentials.
 
 ```sh
 cf cups customer-uaa-creds -p '{"UAA_CLIENT_ID": "client-id", "UAA_CLIENT_SECRET": "client_secret"}'
+```
+
+### S3 bucket with billing data
+
+In order to get the S3 bucket that is published by the
+[cg-billing](https://github.com/18F/cg-billing/) app, you have to get the old
+pipeline, change the org and space for where it should place the UPS, then set
+new pipeline.
+
+To change the pipeline, you use the `fly` cli.
+
+To get the pipeline, run:
+
+```sh
+fly -t {your-concourse-target} get-pipeline -p deploy-billing > deploy_billing.yml
+```
+
+To set the pipeline, run:
+
+```sh
+fly -t {your-concourse-target} set-pipeline -n -c deploy_billing.yml -p deploy-billing
 ```
 
 ### Other credentials
