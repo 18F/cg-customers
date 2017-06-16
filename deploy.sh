@@ -12,16 +12,19 @@ cf -v
 go get github.com/contraband/autopilot
 cf install-plugin -f /home/ubuntu/.go_workspace/bin/autopilot
 
+CF_APP="customers"
+CF_ORGANIZATION="cloud-gov"
+
 if [ "$CIRCLE_BRANCH" == "master" ]
 then
 	CF_MANIFEST="manifest-staging.yml"
 	CF_SPACE="customer-stage"
-	CF_APP="customers-staging"
+	CF_API="https://api.fr-stage.cloud.gov"
 elif [ "$CIRCLE_BRANCH" == "production" ]
 then
 	CF_MANIFEST="manifest.yml"
 	CF_SPACE="customer-prod"
-	CF_APP="customers"
+	CF_API="https://api.fr.cloud.gov"
 else
   echo Unknown environment, quitting. >&2
   exit 1
@@ -31,7 +34,6 @@ fi
 # our deployer accounts.
 # Currently, the deployer accounts are scoped to a single space.
 # As a result, we will filter by space for which credentials to use.
-CF_ORGANIZATION="cloud-gov"
 if [ "$CF_SPACE" == "customer-prod" ]
 then
 	CF_USERNAME=$CF_USERNAME_PROD_SPACE
@@ -54,7 +56,6 @@ function deploy () {
   local space=${3}
   local app=${4}
 
-  CF_API="https://api.fr.cloud.gov"
   # Log in
   cf api $CF_API
   cf auth $CF_USERNAME $CF_PASSWORD

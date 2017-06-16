@@ -5,7 +5,8 @@
 It just uses the django-admin interface to act as the UI for the machine
 readable source of truth for customer data.
 
-https://customers.fr.cloud.gov
+[Production](https://customers.fr.cloud.gov)
+[Staging](https://customers.fr-stage.cloud.gov)
 
 Team members will need to request access to #cg-customer to have your e-mail
 added to the django database so that when login requests from this
@@ -40,7 +41,7 @@ cf create-service cloud-gov-identity-provider oauth-client \
 # Staging
 cf create-service cloud-gov-identity-provider oauth-client \
   customer-uaa-client \
-  -c '{"redirect_uri": ["https://customers-staging.fr.cloud.gov"]}'
+  -c '{"redirect_uri": ["https://customers.fr-stage.cloud.gov"]}'
 ```
 
 Next, run: `cf service customer-uaa-client` to get the fugacious link. Open the

@@ -1,6 +1,6 @@
 applications:
-- name: customers-staging
-  domain: fr.cloud.gov
+- name: customers
+  domain: fr-stage.cloud.gov
   instances: 1
   memory: 512M
   disk_quota: 1024M
