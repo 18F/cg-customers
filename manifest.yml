@@ -14,5 +14,5 @@ applications:
     - billing
   env:
     DEBUG: 'False'
-      UAA_AUTH_URL: 'https://login.fr.cloud.gov/oauth/authorize'
-      UAA_TOKEN_URL: 'https://uaa.fr.cloud.gov/oauth/token'
+    UAA_AUTH_URL: 'https://login.fr.cloud.gov/oauth/authorize'
+    UAA_TOKEN_URL: 'https://uaa.fr.cloud.gov/oauth/token'
