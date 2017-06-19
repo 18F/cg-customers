@@ -175,9 +175,9 @@ if DEBUG:
 
     UAA_TOKEN_URL = 'fake:'
 else:
-    UAA_AUTH_URL = 'https://login.fr.cloud.gov/oauth/authorize'
+    UAA_AUTH_URL = os.environ.get('UAA_AUTH_URL', 'https://login.fr.cloud.gov/oauth/authorize')
 
-    UAA_TOKEN_URL = 'https://uaa.fr.cloud.gov/oauth/token'
+    UAA_TOKEN_URL = os.environ.get('UAA_TOKEN_URL', 'https://uaa.fr.cloud.gov/oauth/token')
 
 uaa_service = env.get_service(name='customer-uaa-creds')
 if uaa_service is not None:
