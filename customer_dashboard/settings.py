@@ -154,9 +154,15 @@ if cf_s3:
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
     STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
     AWS_STORAGE_BUCKET_NAME = cf_s3.credentials['bucket']
-    AWS_S3_REGION_NAME = cf_s3.credentials['region']
     AWS_ACCESS_KEY_ID = cf_s3.credentials['access_key_id']
     AWS_SECRET_ACCESS_KEY = cf_s3.credentials['secret_access_key']
+    if "endpoint" in cf_s3.credentials:
+        # For local development, we must override the endpoint, and region is
+        # irrelevant.
+        AWS_S3_ENDPOINT_URL = cf_s3.credentials["endpoint"]
+    else:
+        AWS_S3_REGION_NAME = cf_s3.credentials['region']
+
     print('Using S3 instance `customer-s3`')
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles/')

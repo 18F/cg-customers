@@ -4,3 +4,4 @@ db.sqlite3
 static/
 .cache
 deploy_billing.yml
+.venv-prod

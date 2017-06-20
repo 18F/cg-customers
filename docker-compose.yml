@@ -1,0 +1,77 @@
+version: '3'
+services:
+  # This service is a shared network stack (i.e. shared "localhost") for all
+  # external-facing services. It allows "localhost" links to work correctly
+  # outside of Docker.
+  proxy:
+    image: busybox
+    command: sleep 100d   # do nothing
+    ports:  # forwarded
+      - 8100:8100   # customer-dashboard
+      - 9100:9100   # minio-collectstatic
+      - 9200:9200   # minio-collectstatic
+  db:
+    image: postgres:9.4
+    volumes:
+      - database_data:/var/lib/postgresql/data
+  minio-collectstatic:
+    image: minio/minio
+    environment:
+        - MINIO_ACCESS_KEY=LOCAL_ID
+        - MINIO_SECRET_KEY=LOCAL_KEY
+    command: server --address ':9100' minio-test-static
+    network_mode: service:proxy
+  minio-billing:
+    image: minio/minio
+    environment:
+        - MINIO_ACCESS_KEY=LOCAL_ID
+        - MINIO_SECRET_KEY=LOCAL_KEY
+    command: server --help --address ':9200' minio-test-billing
+    network_mode: service:proxy
+  python: &PYTHON     # This command is out of order to aid with config reuse
+    image: python:3.6.1
+    volumes:
+      - $PWD:/usr/src/app
+    working_dir: /usr/src/app
+    stdin_open: true
+    tty: true
+  prod-api: &PROD_API
+    <<: *PYTHON
+    command: ./docker_scripts/setup_resources_then ./start.sh
+    environment: &API_ENV
+      DATABASE_URL: postgres://postgres@db/postgres
+      PORT: 8100
+      DJANGO_SETTINGS_MODULE: customer_dashboard.settings
+      TMPDIR: /tmp
+      USING_SSL: "False"
+      VCAP_APPLICATION: >
+        {"uris": ["localhost", "0.0.0.0", "127.0.0.1", "customers", "proxy"]}
+      VCAP_SERVICES: >
+        {"customer-django-creds": [{"credentials": {"DJANGO_SECRET_KEY": "NotASecret"}}],
+         "billing": [{
+           "credentials": {
+             "access_key_id": "LOCAL_ID",
+             "bucket": "minio-test-billing",
+             "region": "irrelevant fake region",
+             "endpoint": "http://0.0.0.0:9200",
+             "secret_access_key": "LOCAL_KEY"
+           }}],
+         "s3": [{
+           "credentials": {
+             "access_key_id": "LOCAL_ID",
+             "bucket": "minio-test-static",
+             "region": "irrelevant fake region",
+             "endpoint": "http://0.0.0.0:9100",
+             "secret_access_key": "LOCAL_KEY"
+           },
+           "label": "s3",
+           "name": "customer-s3"
+         }]
+        }
+    depends_on:
+      - db
+      - minio-billing
+      - minio-collectstatic
+    network_mode: service:proxy
+volumes:
+  database_data:

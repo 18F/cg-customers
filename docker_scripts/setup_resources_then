@@ -1,0 +1,34 @@
+#!/bin/bash
+#inspired by https://github.com/18F/omb-eregs
+
+until (echo 2>/dev/null > /dev/tcp/db/5432)
+do
+  echo "Startup: Waiting for Postgres"
+  sleep 1
+done
+
+
+if [ -n "$DEBUG" ]; then
+  if [ ! -d .venv-dev ]; then
+    python -m venv .venv-dev
+  fi
+  source .venv-dev/bin/activate
+else
+  if [ ! -d .venv-prod ]; then
+    python -m venv .venv-prod
+  fi
+  source .venv-prod/bin/activate
+fi
+
+if ! [ -x "$(command -v pip-sync)" ]; then
+  pip install pip-tools==1.8.2
+fi
+
+if [ -n "$DEBUG" ]; then
+  pip-sync requirements_dev.txt
+else
+  pip-sync requirements.txt
+fi
+
+
+exec "$@"
