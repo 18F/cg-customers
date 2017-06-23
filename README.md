@@ -111,9 +111,9 @@ to setup a superuser so they can login.
 
 ```sh
 cf ssh customers
-for f in /home/vcap/app/.profile.d/*.sh; do source "$f"; done;
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/app/.cloudfoundry/0/lib/
 cd app
-$HOME/app/.cloudfoundry/python/bin/python3 manage.py createsuperuser \
+$HOME/app/.cloudfoundry/0/python/bin/python3.6 manage.py createsuperuser \
   --username foo --email foo@example.org --noinput
 ```
 
